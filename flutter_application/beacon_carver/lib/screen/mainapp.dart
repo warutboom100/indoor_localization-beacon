@@ -84,16 +84,16 @@ class _BLEProjectPageState extends State<BLEProjectPage> {
               activeTitleColor: Colors.blue.shade600,
             ),
             BottomBarItem(
-              icon: const Icon(Icons.map),
-              title: const Text('Anchor'),
-              backgroundColorOpacity: 0.1,
-              activeColor: Colors.blueAccent.shade700,
-            ),
-            BottomBarItem(
               icon: const Icon(Icons.place),
               title: const Text('Indoor Map'),
               backgroundColorOpacity: 0.1,
               activeColor: Colors.redAccent.shade700,
+            ),
+            BottomBarItem(
+              icon: const Icon(Icons.person),
+              title: const Text('Profile'),
+              backgroundColorOpacity: 0.1,
+              activeColor: Colors.blueAccent.shade700,
             ),
           ],
         ));
