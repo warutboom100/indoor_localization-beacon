@@ -1,4 +1,5 @@
 import 'package:beacon_carver/model/profile.dart';
+import 'package:beacon_carver/screen/mainapp.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
@@ -61,20 +62,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         child: Text('ENTER'),
-                        onPressed: () {
+                        onPressed: () async {
                           if (formKey.currentState!.validate()) {
                             formKey.currentState?.save();
-                            print(
-                                "username = ${profile.username} password = ${profile.passward}");
-
-                            formKey.currentState?.reset();
-                            Fluttertoast.showToast(
-                                msg: "LOGIN Complete",
-                                gravity: ToastGravity.CENTER);
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) {
-                              return HomeScreen();
-                            }));
+                            int error = await getRequest(profile.username);
+                            if (error != 200) {
+                              Fluttertoast.showToast(
+                                  msg: "Sorry this user does not exist",
+                                  gravity: ToastGravity.CENTER);
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "LOGIN Complete",
+                                  gravity: ToastGravity.CENTER);
+                              formKey.currentState?.reset();
+                              Navigator.pushReplacement(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return mainapp();
+                              }));
+                            }
                           }
                         },
                       ),

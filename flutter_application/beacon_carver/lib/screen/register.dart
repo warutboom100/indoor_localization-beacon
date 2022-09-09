@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:beacon_carver/model/profile.dart';
 import 'package:beacon_carver/screen/home.dart';
 import 'package:flutter/material.dart';
@@ -59,24 +61,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        child: Text('ENTER'),
-                        onPressed: () {
-                          if (formkey.currentState!.validate()) {
-                            formkey.currentState?.save();
-                            print(
-                                "username = ${profile.username} password = ${profile.passward}");
+                          child: Text('ENTER'),
+                          onPressed: () async {
+                            if (formkey.currentState!.validate()) {
+                              formkey.currentState?.save();
+                              int error = await postData(
+                                  profile.username, profile.passward);
 
-                            formkey.currentState?.reset();
-                            Fluttertoast.showToast(
-                                msg: "Register Complete",
-                                gravity: ToastGravity.CENTER);
-                            Navigator.pushReplacement(context,
-                                MaterialPageRoute(builder: (context) {
-                              return HomeScreen();
-                            }));
-                          }
-                        },
-                      ),
+                              if (error != 200) {
+                                Fluttertoast.showToast(
+                                    msg: "Username is in use",
+                                    gravity: ToastGravity.CENTER);
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg: "Register Complete",
+                                    gravity: ToastGravity.CENTER);
+                                formkey.currentState?.reset();
+                                Navigator.pushReplacement(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return HomeScreen();
+                                }));
+                              }
+                            }
+                          }),
                     )
                   ],
                 ))),
