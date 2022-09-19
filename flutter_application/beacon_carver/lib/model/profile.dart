@@ -14,7 +14,7 @@ Future<int> postData(String? username, String? password) async {
     Map data1 = {'deviceID': username};
     String body = json.encode(data1);
     var response = await http.post(
-        Uri.parse('https://52ae-58-10-4-143.ap.ngrok.io/reg_users'),
+        Uri.parse('https://0f75-58-10-4-143.ap.ngrok.io/reg_users'),
         headers: {"Content-Type": "application/json"},
         body: body);
     int counter = response.statusCode;
@@ -27,7 +27,7 @@ Future<int> postData(String? username, String? password) async {
 
 Future<int> getRequest(String? username) async {
   try {
-    String url = "https://52ae-58-10-4-143.ap.ngrok.io/login_users/$username";
+    String url = "https://0f75-58-10-4-143.ap.ngrok.io/login_users/$username";
     var response = await http.get(Uri.parse(url));
 
     int counter = response.statusCode;
