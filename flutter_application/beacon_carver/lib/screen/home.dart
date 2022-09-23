@@ -66,6 +66,9 @@ class HomeScreen extends StatelessWidget {
                   validator:
                       RequiredValidator(errorText: 'Please Enter Username'),
                   keyboardType: TextInputType.text,
+                  onSaved: (String? username) {
+                    profile.username = username;
+                  },
                 ),
               ),
               new Padding(
