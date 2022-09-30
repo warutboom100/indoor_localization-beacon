@@ -1,4 +1,5 @@
 import 'package:beacon_carver/ble/ble_data.dart';
+import 'package:beacon_carver/screen/imu_view.dart';
 import 'package:beacon_carver/screen/indoormap.dart';
 import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +75,7 @@ class _BLEProjectPageState extends State<BLEProjectPage> {
             children: [
               isScanning ? pageBLEScan() : selectScanMode(),
               const IndoormapScreen(),
-              Container(color: Colors.green)
+              imu_view(),
             ]),
         bottomNavigationBar: BottomBar(
           textStyle: const TextStyle(fontWeight: FontWeight.bold),
@@ -98,7 +99,7 @@ class _BLEProjectPageState extends State<BLEProjectPage> {
             ),
             BottomBarItem(
               icon: const Icon(Icons.account_circle),
-              title: const Text('Anchor'),
+              title: const Text('Setting'),
               backgroundColorOpacity: 0.1,
               activeColor: Colors.greenAccent.shade700,
             ),

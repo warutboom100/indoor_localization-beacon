@@ -1,6 +1,7 @@
 import 'package:beacon_carver/screen/home.dart';
 import 'package:beacon_carver/screen/mainapp.dart';
 import 'package:flutter/material.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,6 +18,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomeScreen());
+        home: mainapp());
   }
 }

@@ -37,7 +37,7 @@ Future<int> getRequest(String? username) async {
   }
 }
 
-postrssi(int data) async {
+postrssi(double data) async {
   Map data1 = {
     'RSSI1': data,
     'RSSI2': data - 1,
@@ -47,10 +47,14 @@ postrssi(int data) async {
   };
   String body = json.encode(data1);
   var response = await http.post(
-      Uri.parse('https://223f-202-28-7-61.ap.ngrok.io/Sent_rssiwarut/posts'),
+      Uri.parse('https://a3720cc087b4.ap.ngrok.io/Sent_rssiwarut/posts'),
       headers: {"Content-Type": "application/json"},
       body: body);
+  var decoded = json.decode(response.body);
+  List result = [];
+  decoded.values.forEach((value) {
+    result.add(value);
+  });
 
-  print(response.body);
-  return response.body;
+  return Future.value(result);
 }
