@@ -16,57 +16,73 @@ class IndoormapScreen extends StatefulWidget {
 }
 
 class _IndoormapScreen extends State<IndoormapScreen> {
-  final Future<String> _calculation =
-      Future<String>.delayed(const Duration(seconds: 5), () => 'Data Loaded');
-  final formkey = GlobalKey<FormState>();
-  Profile profile = Profile();
-
-  Timer? timer;
-
-  List pos = [0, 0, 0, 0, 0];
-
-  double x = 0;
-  double y = 0;
+  double top = -350;
+  double left = -400;
+  double ratio = 1;
 
   @override
-  void initState() {
-    super.initState();
-
-    /// Initialize a periodic timer with 1 second duration
-    timer = Timer.periodic(
-      const Duration(seconds: 1),
-      (timer) async {
-        /// callback will be executed every 1 second, increament a count value
-        /// on each callback
-        pos = await postrssi(x);
-        print(pos);
-        setState(() {
-          x += 2;
-          // y += 0;
-        });
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          width: 800,
+          height: 400,
+          child: GestureDetector(
+            onPanUpdate: _handlePanUpdate,
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                    top: top,
+                    left: left,
+                    width: 1200 * ratio,
+                    child: Image.asset('assets/images/map1.png')),
+                Positioned(
+                  left: 0,
+                  top: 50,
+                  child: Row(
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: _handleZoomIn,
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.remove),
+                        onPressed: _handleZoomOut,
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                    child: CustomPaint(
+                  painter: OpenPainter(top, left),
+                ))
+              ],
+            ),
+          ),
+        );
       },
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    timer?.cancel();
+  void _handlePanUpdate(DragUpdateDetails details) {
+    // print('The top is $top');
+    // print('The left is $left');
+    setState(() {
+      top = top + details.delta.dy;
+      left = left + details.delta.dx;
+    });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(children: <Widget>[
-        Container(
-          width: 400,
-          height: 400,
-          child: CustomPaint(
-            painter: OpenPainter(pos[0].toDouble(), pos[1].toDouble()),
-          ),
-        ),
-      ]),
-    );
+  void _handleZoomIn() {
+    setState(() {
+      ratio *= 1.5;
+    });
+  }
+
+  void _handleZoomOut() {
+    setState(() {
+      ratio /= 1.5;
+    });
   }
 }
 
@@ -80,12 +96,7 @@ class OpenPainter extends CustomPainter {
     var paint1 = Paint()
       ..color = Color(0xffaa44aa)
       ..style = PaintingStyle.fill;
-    canvas.drawCircle(Offset(50, 50), 10, paint1);
-    canvas.drawCircle(Offset(350, 50), 10, paint1);
-    canvas.drawCircle(Offset(350, 350), 10, paint1);
-    canvas.drawCircle(Offset(50, 350), 10, paint1);
-
-    canvas.drawCircle(Offset(x, y), 10, paint1);
+    canvas.drawCircle(Offset(250 + y + 350, 400 + x + 400), 10, paint1);
   }
 
   @override
