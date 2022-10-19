@@ -31,17 +31,12 @@ class _Homepage_app extends State<Homepage_app> {
     {"title": "Pay telephone bill", "completed": false},
   ];
 
-  static Icon fab = Icon(
-    Icons.search,
-  );
-
-  static int fabIconNumber = 0;
   var bleController = Get.put(BLEResult());
   final _pageController = PageController();
   TextEditingController textController = TextEditingController();
 
   FlutterBluePlus flutterBlue = FlutterBluePlus.instance;
-  static bool isScanning = false;
+  bool isScanning = false;
   int scanMode = 0;
 
   // BLE value
@@ -61,25 +56,13 @@ class _Homepage_app extends State<Homepage_app> {
       appBar: AppBar(
         title: Text('Your position'),
         automaticallyImplyLeading: false,
-        actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                  onTap: () {
-                    toggleState();
-                    setState(() {
-                      if (fabIconNumber == 0) {
-                        fab = Icon(
-                          Icons.stop,
-                        );
-                        fabIconNumber = 1;
-                      } else {
-                        fab = Icon(Icons.search);
-                        fabIconNumber = 0;
-                      }
-                    });
-                  },
-                  child: fab)),
+        actions: [
+          IconButton(
+            icon: Icon(isScanning ? Icons.stop : Icons.search),
+            onPressed: () {
+              toggleState();
+            },
+          )
         ],
       ),
       key: _key,
@@ -160,10 +143,11 @@ class _Homepage_app extends State<Homepage_app> {
                   size: 30,
                 ),
                 onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return User_position();
-                  }));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const User_position()),
+                  );
                 },
               ),
               SizedBox(width: 20.0),
@@ -176,10 +160,10 @@ class _Homepage_app extends State<Homepage_app> {
         backgroundColor: color3,
         child: Icon(Icons.place),
         onPressed: () {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
-            return IndoormapScreen();
-          }));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const IndoormapScreen()),
+          );
         },
       ),
     );

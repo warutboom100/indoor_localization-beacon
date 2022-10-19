@@ -94,10 +94,7 @@ class _User_position extends State<User_position> {
           backgroundColor: color2,
           child: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) {
-              return Homepage_app();
-            }));
+            Navigator.pop(context);
           },
         ),
         body: _isGridMode

@@ -85,10 +85,7 @@ class _IndoormapScreen extends State<IndoormapScreen> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.keyboard_return),
         onPressed: () {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) {
-            return Homepage_app();
-          }));
+          Navigator.pop(context);
         },
       ),
     );
