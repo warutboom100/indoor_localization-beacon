@@ -3,10 +3,13 @@ import 'dart:io';
 
 import 'package:beacon_carver/model/profile.dart';
 import 'package:beacon_carver/screen/home.dart';
+import 'package:beacon_carver/screen/page_main.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
+
+final Color color2 = Color(0xffFA8165);
 
 class IndoormapScreen extends StatefulWidget {
   const IndoormapScreen({Key? key}) : super(key: key);
@@ -15,88 +18,101 @@ class IndoormapScreen extends StatefulWidget {
   _IndoormapScreen createState() => _IndoormapScreen();
 }
 
+double pos_x = 100;
+
+enum _Action { scale, pan }
+
+const _defaultMarkerSize = 8.0;
+
 class _IndoormapScreen extends State<IndoormapScreen> {
-  double top = -350;
-  double left = -400;
-  double ratio = 1;
+  Offset _pos =
+      Offset.zero; // Position could go from -1 to 1 in both directions
+  _Action? action; // pan or pinch, useful to know if we need to scale down pin
+  final _transformationController = TransformationController();
+  Timer? timer;
 
   @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Container(
-          width: 800,
-          height: 400,
-          child: GestureDetector(
-            onPanUpdate: _handlePanUpdate,
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                    top: top,
-                    left: left,
-                    width: 1200 * ratio,
-                    child: Image.asset('assets/images/map1.png')),
-                Positioned(
-                  left: 0,
-                  top: 50,
-                  child: Row(
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.add),
-                        onPressed: _handleZoomIn,
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.remove),
-                        onPressed: _handleZoomOut,
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                    child: CustomPaint(
-                  painter: OpenPainter(top, left),
-                ))
-              ],
-            ),
-          ),
-        );
+  void initState() {
+    super.initState();
+
+    /// Initialize a periodic timer with 1 second duration
+    timer = Timer.periodic(
+      const Duration(milliseconds: 700),
+      (timer) {
+        setState(() {
+          pos_x += 5;
+        });
       },
     );
   }
 
-  void _handlePanUpdate(DragUpdateDetails details) {
-    // print('The top is $top');
-    // print('The left is $left');
-    setState(() {
-      top = top + details.delta.dy;
-      left = left + details.delta.dx;
-    });
+  @override
+  Widget build(BuildContext context) {
+    final scale = _transformationController.value.getMaxScaleOnAxis();
+    final size = _defaultMarkerSize / scale;
+    return Scaffold(
+      appBar: AppBar(title: Text('Your position')),
+      body: InteractiveViewer(
+        transformationController: _transformationController,
+        maxScale: 5,
+        minScale: 1,
+        child: Stack(
+          children: [
+            Center(child: Image.asset('assets/images/map.png')),
+            Positioned(
+                child: CustomPaint(
+              painter: OpenPainter(pos_x, 353, size),
+            ))
+          ],
+        ),
+        onInteractionStart: (details) {
+          // No need to call setState as we don't need to rebuild
+          action = null;
+        },
+        onInteractionUpdate: (details) {
+          if (action == null) {
+            if (details.scale == 1)
+              action = _Action.pan;
+            else
+              action = _Action.scale;
+          }
+          if (action == _Action.scale) {
+            // Need to resize the pins so that they keep the same size
+            setState(() {});
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.keyboard_return),
+        onPressed: () {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) {
+            return Homepage_app();
+          }));
+        },
+      ),
+    );
   }
 
-  void _handleZoomIn() {
-    setState(() {
-      ratio *= 1.5;
-    });
-  }
+  @override
+  void dispose() {
+    super.dispose();
 
-  void _handleZoomOut() {
-    setState(() {
-      ratio /= 1.5;
-    });
+    timer?.cancel();
   }
 }
 
 class OpenPainter extends CustomPainter {
   double x = 0;
   double y = 0;
-
-  OpenPainter(this.x, this.y);
+  final double a;
+  OpenPainter(this.x, this.y, this.a);
   @override
   void paint(Canvas canvas, Size size) {
     var paint1 = Paint()
       ..color = Color(0xffaa44aa)
       ..style = PaintingStyle.fill;
-    canvas.drawCircle(Offset(250 + y + 350, 400 + x + 400), 10, paint1);
+    canvas.drawCircle(Offset(x, y), a, paint1);
   }
 
   @override

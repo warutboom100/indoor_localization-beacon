@@ -1,4 +1,5 @@
 import 'package:beacon_carver/model/profile.dart';
+import 'package:beacon_carver/screen/page_main.dart';
 import 'package:flutter/material.dart';
 import 'package:beacon_carver/screen/login.dart';
 import 'package:beacon_carver/screen/register.dart';
@@ -109,7 +110,7 @@ class HomeScreen extends StatelessWidget {
                             formKey.currentState?.reset();
                             Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
-                              return mainapp();
+                              return Homepage_app();
                             }));
                           }
                         }

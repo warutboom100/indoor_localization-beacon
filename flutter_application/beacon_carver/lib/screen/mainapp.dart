@@ -1,6 +1,7 @@
 import 'package:beacon_carver/ble/ble_data.dart';
 import 'package:beacon_carver/screen/imu_view.dart';
 import 'package:beacon_carver/screen/indoormap.dart';
+import 'package:beacon_carver/screen/page_main.dart';
 import 'package:bottom_bar/bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -9,8 +10,8 @@ import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:rolling_switch/rolling_switch.dart';
 
-class mainapp extends StatelessWidget {
-  const mainapp({Key? key}) : super(key: key);
+class mainapp1 extends StatelessWidget {
+  const mainapp1({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -69,13 +70,14 @@ class _BLEProjectPageState extends State<BLEProjectPage> {
             toggleState();
           },
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: PageView(
             controller: _pageController,
             physics: const NeverScrollableScrollPhysics(),
             children: [
               isScanning ? pageBLEScan() : selectScanMode(),
-              const IndoormapScreen(),
-              imu_view(),
+              IndoormapScreen(),
+              Homepage_app(),
             ]),
         bottomNavigationBar: BottomBar(
           textStyle: const TextStyle(fontWeight: FontWeight.bold),
