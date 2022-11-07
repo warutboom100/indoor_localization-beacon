@@ -1,3 +1,5 @@
+import 'package:beacon_carver/model/kalmanfilter.dart';
+import 'package:beacon_carver/model/profile.dart';
 import 'package:beacon_carver/screen/home.dart';
 import 'package:beacon_carver/screen/indoormap.dart';
 import 'package:beacon_carver/screen/user_position.dart';
@@ -8,6 +10,11 @@ import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:get/get.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
+
+KalmanFilter kf = new KalmanFilter(0.0025, 0.112, 0, 0);
+KalmanFilter kf1 = new KalmanFilter(0.0025, 0.112, 0, 0);
+KalmanFilter kf2 = new KalmanFilter(0.0025, 0.112, 0, 0);
+KalmanFilter kf3 = new KalmanFilter(0.0025, 0.112, 0, 0);
 
 class Homepage_app extends StatefulWidget {
   const Homepage_app({Key? key}) : super(key: key);
@@ -47,6 +54,8 @@ class _Homepage_app extends State<Homepage_app> {
   String manuFactureData = '';
   String tp = '';
 
+  String userdata = Profile.name;
+
   var _tabScanModeIndex = 1;
   final _scanModeList = ['Low Power', 'Balanced', 'Performance'];
 
@@ -54,7 +63,7 @@ class _Homepage_app extends State<Homepage_app> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your position'),
+        title: Text('Localization'),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -81,7 +90,7 @@ class _Homepage_app extends State<Homepage_app> {
             ),
             ListTile(
               leading: Icon(Icons.account_box),
-              title: const Text('Profile'),
+              title: Text('Profile ($userdata) '),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -226,7 +235,7 @@ class _Homepage_app extends State<Homepage_app> {
         manuFactureData: manuFactureData,
         tp: tp);
     if (macAddress == "DD:EE:07:58:61:32" ||
-        macAddress == "F3:66:AB:6E:ED:36" ||
+        macAddress == "D3:B7:A7:91:0B:FC" ||
         macAddress == "C8:EC:06:1D:7B:DF" ||
         macAddress == "DF:0E:44:8D:32:C1") {
       bleController.flagList[index];
@@ -326,82 +335,18 @@ class _Homepage_app extends State<Homepage_app> {
         .replaceAll('}', '');
     tp = r.advertisementData.txPowerLevel.toString();
     rssi = r.rssi.toString();
-  }
-
-  Container _buildHeader() {
-    return Container(
-      height: 250,
-      width: double.infinity,
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            bottom: 0,
-            left: -100,
-            top: -150,
-            child: Container(
-              width: 350,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(colors: [color1, color2]),
-                  boxShadow: [
-                    BoxShadow(
-                        color: color2,
-                        offset: Offset(4.0, 4.0),
-                        blurRadius: 10.0)
-                  ]),
-            ),
-          ),
-          Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(colors: [color3, color2]),
-                boxShadow: [
-                  BoxShadow(
-                      color: color3, offset: Offset(1.0, 1.0), blurRadius: 4.0)
-                ]),
-          ),
-          Positioned(
-            top: 100,
-            right: 200,
-            child: Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: LinearGradient(colors: [color3, color2]),
-                  boxShadow: [
-                    BoxShadow(
-                        color: color3,
-                        offset: Offset(1.0, 1.0),
-                        blurRadius: 4.0)
-                  ]),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 60, left: 30),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "Himanshu",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.w700),
-                ),
-                SizedBox(height: 10.0),
-                Text(
-                  "You have 2 remaining\ntasks for today!",
-                  style: TextStyle(color: Colors.white, fontSize: 18.0),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-    );
+    if (macAddress == "DD:EE:07:58:61:32") {
+      rssi = kf.getFilteredValue(r.rssi.toDouble()).toString();
+    }
+    if (macAddress == "D3:B7:A7:91:0B:FC") {
+      rssi = kf2.getFilteredValue(r.rssi.toDouble()).toString();
+    }
+    if (macAddress == "C8:EC:06:1D:7B:DF") {
+      rssi = kf2.getFilteredValue(r.rssi.toDouble()).toString();
+    }
+    if (macAddress == "DF:0E:44:8D:32:C1") {
+      rssi = kf3.getFilteredValue(r.rssi.toDouble()).toString();
+    }
   }
 
   /* Selected BLE Scan Page */

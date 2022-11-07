@@ -11,6 +11,7 @@ import 'package:beacon_carver/screen/mainapp.dart';
 class HomeScreen extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   Profile profile = Profile();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,6 +105,7 @@ class HomeScreen extends StatelessWidget {
                                 msg: "Sorry this user does not exist",
                                 gravity: ToastGravity.CENTER);
                           } else {
+                            Profile.name = profile.username!;
                             Fluttertoast.showToast(
                                 msg: "LOGIN Complete",
                                 gravity: ToastGravity.CENTER);
