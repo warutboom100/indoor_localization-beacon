@@ -18,7 +18,7 @@ Future<int> postData(String? username, String? password) async {
     Map data1 = {'deviceID': username};
     String body = json.encode(data1);
     var response = await http.post(
-        Uri.parse('https://7247d76f8184.ap.ngrok.io/reg_users'),
+        Uri.parse('https://0e5acab8c700.ap.ngrok.io/reg_users'),
         headers: {"Content-Type": "application/json"},
         body: body);
     int counter = response.statusCode;
@@ -31,7 +31,7 @@ Future<int> postData(String? username, String? password) async {
 
 Future<int> getRequest(String? username) async {
   try {
-    String url = "https://7247d76f8184.ap.ngrok.io/login_users/$username";
+    String url = "https://0e5acab8c700.ap.ngrok.io/login_users/$username";
     var response = await http.get(Uri.parse(url));
 
     int counter = response.statusCode;
@@ -45,14 +45,14 @@ postrssi(List data) async {
   String userdata = Profile.name;
   Map data1 = {
     'RSSI1': data[0],
-    'RSSI2': data[1],
-    'RSSI3': data[2],
-    'RSSI4': data[3],
+    'RSSI2': -57,
+    'RSSI3': -57,
+    'RSSI4': -57,
     'RSSI5': -57
   };
   String body = json.encode(data1);
   var response = await http.post(
-      Uri.parse('https://7247d76f8184.ap.ngrok.io/Sent_rssi$userdata/posts'),
+      Uri.parse('https://0e5acab8c700.ap.ngrok.io/Sent_rssi$userdata/posts'),
       headers: {"Content-Type": "application/json"},
       body: body);
   var decoded = json.decode(response.body);

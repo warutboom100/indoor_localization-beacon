@@ -11,8 +11,8 @@ import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:get/get.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
-KalmanFilter kf = new KalmanFilter(0.0025, 0.112, 0, 0);
-KalmanFilter kf1 = new KalmanFilter(0.0025, 0.112, 0, 0);
+KalmanFilter kf = new KalmanFilter(0.0025, 0.182, 0, 0);
+KalmanFilter kf1 = new KalmanFilter(0.0025, 0.182, 0, 0);
 KalmanFilter kf2 = new KalmanFilter(0.0025, 0.112, 0, 0);
 KalmanFilter kf3 = new KalmanFilter(0.0025, 0.112, 0, 0);
 
@@ -234,10 +234,12 @@ class _Homepage_app extends State<Homepage_app> {
         serviceUUID: serviceUUID,
         manuFactureData: manuFactureData,
         tp: tp);
-    if (macAddress == "DD:EE:07:58:61:32" ||
-        macAddress == "D3:B7:A7:91:0B:FC" ||
-        macAddress == "C8:EC:06:1D:7B:DF" ||
-        macAddress == "DF:0E:44:8D:32:C1") {
+    if (
+        // macAddress == "DD:EE:07:58:61:32" ||
+        macAddress == "D3:B7:A7:91:0B:FC"
+        // macAddress == "C8:EC:06:1D:7B:DF" ||
+        //  macAddress == "DF:0E:44:8D:32:C1")
+        ) {
       bleController.flagList[index];
       bleController.updateFlagList(flag: true, index: index);
     }

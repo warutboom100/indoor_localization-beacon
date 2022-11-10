@@ -47,7 +47,7 @@ class _IndoormapScreen extends State<IndoormapScreen>
     final bleController = Get.put(BLEResult());
 
     controller = AnimationController(
-        duration: const Duration(milliseconds: 500), vsync: this)
+        duration: const Duration(milliseconds: 1000), vsync: this)
       ..addListener(() => setState(() {}))
       ..forward()
       ..addStatusListener((status) async {
