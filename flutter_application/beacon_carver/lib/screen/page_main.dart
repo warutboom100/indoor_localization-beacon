@@ -234,9 +234,7 @@ class _Homepage_app extends State<Homepage_app> {
         serviceUUID: serviceUUID,
         manuFactureData: manuFactureData,
         tp: tp);
-    if (
-        // macAddress == "DD:EE:07:58:61:32" ||
-        macAddress == "D3:B7:A7:91:0B:FC"
+    if (macAddress == "DD:EE:07:58:61:32" || macAddress == "D3:B7:A7:91:0B:FC"
         // macAddress == "C8:EC:06:1D:7B:DF" ||
         //  macAddress == "DF:0E:44:8D:32:C1")
         ) {
@@ -349,49 +347,5 @@ class _Homepage_app extends State<Homepage_app> {
     if (macAddress == "DF:0E:44:8D:32:C1") {
       rssi = kf3.getFilteredValue(r.rssi.toDouble()).toString();
     }
-  }
-
-  /* Selected BLE Scan Page */
-  Center pageBLESelected() => Center(
-        child:
-            /* listview */
-            ListView.separated(
-                itemCount: bleController.selectedDeviceIdxList.length,
-                itemBuilder: (context, index) => widgetSelectedBLEList(
-                      index,
-                      bleController.scanResultList[
-                          bleController.selectedDeviceIdxList[index]],
-                    ),
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider()),
-      );
-
-  /* listview widget for ble data */
-  Widget widgetSelectedBLEList(int currentIdx, ScanResult r) {
-    toStringBLE(r);
-    bleController.updateBLEList(
-        deviceName: deviceName,
-        macAddress: macAddress,
-        rssi: rssi,
-        serviceUUID: serviceUUID,
-        manuFactureData: manuFactureData,
-        tp: tp);
-
-    num distance = 5;
-
-    bleController.selectedDistanceList[currentIdx] = distance;
-    String constN = bleController.selectedConstNList[currentIdx].toString();
-    String rssi1m = bleController.selectedRSSI_1mList[currentIdx].toString();
-
-    return ExpansionTile(
-      //leading: leading(r),
-      title: Text('$deviceName ($macAddress)',
-          style: const TextStyle(color: Colors.black)),
-      subtitle: Text(
-          '\n Alias : Anchor$currentIdx\n N : $constN\n RSSI at 1m : ${rssi1m}dBm',
-          style: const TextStyle(color: Colors.blueAccent)),
-      trailing: Text('${distance.toStringAsPrecision(3)}m',
-          style: const TextStyle(color: Colors.black)),
-    );
   }
 }

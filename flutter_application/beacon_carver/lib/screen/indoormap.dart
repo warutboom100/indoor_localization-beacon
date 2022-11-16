@@ -51,7 +51,7 @@ class _IndoormapScreen extends State<IndoormapScreen>
       ..addListener(() => setState(() {}))
       ..forward()
       ..addStatusListener((status) async {
-        List rssi1 = [];
+        List rssi1 = [0, 0];
         if (status == AnimationStatus.completed) {
           controller.reverse();
         } else if (status == AnimationStatus.dismissed) {
@@ -62,11 +62,20 @@ class _IndoormapScreen extends State<IndoormapScreen>
               idx++) {
             var rssi = bleController
                 .scanResultList[bleController.selectedDeviceIdxList[idx]].rssi;
-
-            rssi1.add(rssi);
+            String id = bleController
+                .scanResultList[bleController.selectedDeviceIdxList[idx]]
+                .device
+                .id
+                .id;
+            if (id == "DD:EE:07:58:61:32") {
+              rssi1[0] = rssi;
+            }
+            if (id == "D3:B7:A7:91:0B:FC") {
+              rssi1[1] = rssi;
+            }
           }
 
-          pos = await postrssi(rssi1);
+          postrssi(rssi1);
         }
       });
 
