@@ -9,7 +9,8 @@ import numpy as np
 import sqlalchemy.orm as _orm
 import uvicorn
 import services as _services, schemas as _schemas
-
+import xlsxwriter
+import pandas as pd
 
 import procress as func
 
@@ -17,7 +18,7 @@ import procress as func
 
 
 
-KF1 = func.Kalmanfilter_dist(1.0,0.85,1.25,1.25,1.25)
+KF1 = func.Kalmanfilter_dist(1.0,0.85,0.75,0.75,0.75)
 
 app = _fastapi.FastAPI()
 
@@ -65,24 +66,39 @@ def create_post(
     db: _orm.Session = _fastapi.Depends(_services.get_db),
     
 ):
+    # readDataframe = pd.read_excel (r'data/rssi-data1.xlsx')
     rssi = [post.RSSI1,post.RSSI2,post.RSSI3,post.RSSI4,post.RSSI5]
+    # print(np.exp(-9.2)*np.exp(-0.14339 * rssi[0]))
     # dist = list(func.convert_rssi(post.RSSI1,post.RSSI2,post.RSSI3,post.RSSI4))
-
+#     print(len(readDataframe["RSSI1"]),rssi[0])
+#     if(len(readDataframe["RSSI1"])>200):
+#       print('end')
+#     else:
+      
+#       newDataframe = pd.DataFrame({'Mac-address' : ['rrsi_2'],'RSSI1' : [rssi[0]]})
+   
+#       frames = [readDataframe, newDataframe]
+#       result = pd.concat(frames)
+#    # สร้าง Writer เหมือนกับตอนเขียนไฟล์
+#       writer = pd.ExcelWriter('data/rssi-data1.xlsx', engine='xlsxwriter')
+#    # นำข้อมูลชุดใหม่เขียนลงไฟล์และจบการทำงาน
+#       result.to_excel(writer, index = False)
+#       writer.save()
     mean = _services.get_meandist(db=db,deviceID=deviceID)
     std = _services.get_stddist(db=db,deviceID=deviceID)
-    # print(mean)
-    # print(std)
+    # # print(mean)
+    # # print(std)
 
     
     if(mean[0] != None):
-        if(std[0][0] and std[1][0] and std[2][0] and std[3][0] == 10000.0) :
+        if(std[0][0] == 10000.0) :
             _services.create_dist(db=db, post= _schemas.Distcreate(dist1=rssi[0],dist2=rssi[1],dist3=rssi[2],dist4=rssi[3],dist5=rssi[4])
     ,   deviceID=deviceID)
         # else:
             
             
 
-        elif(std[0][0] and std[1][0] and std[2][0] and std[3][0] != 10000.0) :
+        elif(std[0][0]  != 10000.0) :
             a1 = func.gaussian(mean[0][0],std[0][0],rssi[0])
             a2 = func.gaussian(mean[1][0],std[1][0],rssi[1])
             a3 = func.gaussian(mean[2][0],std[2][0],rssi[2])
@@ -90,8 +106,8 @@ def create_post(
             G_ = [a1,a2,a3,a4]
             # print(rssi)
             # print(a1,a2,a3,a4)
-            data = [0.0, 0.0, 0.0, 0.0, 0.0]
-            print(G_)
+            data = [0.0, 0.0, 0.0, 0.0]
+            
             for i in range(len(G_)):
                 if(0.6 <= G_[i] <= 1):
                     data[i] = rssi[i]
@@ -100,9 +116,9 @@ def create_post(
                         data[i] = sqrt(2*std[i][0]*np.log(3.8*std[i][0])).real + mean[i][0]
                     elif rssi[i] < mean[i][0]:
                         data[i] = (sqrt(2*std[i][0]*np.log(6.3*std[i][0])).real - mean[i][0])*-1
-            _services.create_dist(db=db, post= _schemas.Distcreate(dist1=data[0],dist2=data[1],dist3=data[2],dist4=data[3],dist5=data[4])
+            _services.create_dist(db=db, post= _schemas.Distcreate(dist1=data[0],dist2=data[1],dist3=data[2],dist4=data[3],dist5=0.0)
                 , deviceID=deviceID)
-            print(data)
+            
         
 
     #         population_df1 = np.random.normal(mean[0],std[0],31)
@@ -131,48 +147,60 @@ def create_post(
             
             
             
-    #     mean = _services.get_meandist(db=db,deviceID=deviceID)
-    #     std = _services.get_stddist(db=db,deviceID=deviceID)
-    #     _services.create_weightdist(db=db, post=_schemas.weightdistance_create(mean_dist1=mean[0],std_dist1=std[0],
-    #     mean_dist2=mean[1],std_dist2=std[1],mean_dist3=mean[2],std_dist3=std[2],mean_dist4=mean[3],std_dist4=std[3],
-    #     mean_dist5=mean[4],std_dist5=std[4]),deviceID=deviceID)
+        # mean = _services.get_meandist(db=db,deviceID=deviceID)
+        # std = _services.get_stddist(db=db,deviceID=deviceID)
+        # _services.create_weightdist(db=db, post=_schemas.weightdistance_create(mean_dist1=mean[0],std_dist1=std[0],
+        # mean_dist2=mean[1],std_dist2=std[1],mean_dist3=mean[2],std_dist3=std[2],mean_dist4=mean[3],std_dist4=std[3],
+        # mean_dist5=mean[4],std_dist5=std[4]),deviceID=deviceID)
 
     elif(mean[0] == None):
 
         _services.create_dist(db=db, post= _schemas.Distcreate(dist1=rssi[0],dist2=rssi[1],dist3=rssi[2],dist4=rssi[3],dist5=rssi[4])
     , deviceID=deviceID)
 
-        _services.create_weightdist(db=db, post=_schemas.weightdistance_create(mean_dist1=0.0,std_dist1=10000.0,
-        mean_dist2=0.0,std_dist2=10000.0,mean_dist3=0.0,std_dist3=10000.0,mean_dist4=0.0,std_dist4=10000.0,
-        mean_dist5=0.0,std_dist5=10000.0),deviceID=deviceID)
+        _services.create_weightrssi(db=db, post=_schemas.weightrssi_create(mean_rssi1=0.0,std_rssi1=10000.0,
+        mean_rssi2=0.0,std_rssi2=10000.0,mean_rssi3=0.0,std_rssi3=10000.0,mean_rssi4=0.0,std_rssi4=10000.0,
+        mean_rssi5=0.0,std_rssi5=10000.0),deviceID=deviceID)
     # print(func.trilateration(dist))
-    result = _schemas.PostCreate1(position_x= 5.23,position_y= 2.56)
+    # result = _schemas.PostCreate1(position_x= 5.23,position_y= 2.56)
     
     db_user = _services.get_user_by_deviceID(db=db, deviceID=deviceID)
     if db_user is None:
         raise _fastapi.HTTPException(
             status_code=404, detail="sorry this user does not exist"
         )
+
     _services.create_post(db=db, post= post, deviceID=deviceID)
     
-    # return _services.create_post1(db=db, post= result, deviceID=deviceID)
-@app.get("/read_position{deviceID}", response_model=List[_schemas.Post1])
+    return 
+@app.get("/read_position{deviceID}", response_model=_schemas.Post1)
 def read_posts(
     deviceID: str,
     
     db: _orm.Session = _fastapi.Depends(_services.get_db),
 ):
+
     mean = _services.get_meandist1(db=db,deviceID=deviceID)
     std = _services.get_stddist1(db=db,deviceID=deviceID)
-    _services.create_weightdist(db=db, post=_schemas.weightdistance_create(mean_dist1=mean[0],std_dist1=std[0],
-        mean_dist2=mean[1],std_dist2=std[1],mean_dist3=mean[2],std_dist3=std[2],mean_dist4=mean[3],std_dist4=std[3],
-        mean_dist5=mean[4],std_dist5=std[4]),deviceID=deviceID)
-    mean = _services.get_meandist1(db=db,deviceID=deviceID)
-    std = _services.get_stddist1(db=db,deviceID=deviceID)
-    print(mean)
-    print(std)
+    
+    _services.create_weightrssi(db=db, post=_schemas.weightrssi_create(mean_rssi1=mean[0],std_rssi1=std[0],
+        mean_rssi2=mean[1],std_rssi2=std[1],mean_rssi3=mean[2],std_rssi3=std[2],mean_rssi4=mean[3],std_rssi4=std[3],
+        mean_rssi5=mean[4],std_rssi5=std[4]),deviceID=deviceID)
+    mean = _services.get_meandist2(db=db,deviceID=deviceID)
+    std = _services.get_stddist2(db=db,deviceID=deviceID)
+    
+    dist = [np.exp(-9.2)*np.exp(-0.14339 * mean[0]),0,0,0]
+
+    print(dist)
+    print(KF1.predict(dist))
+    # trigulation = func.trilateration(KF1.predict(dist))
+    post = _schemas.PostCreate1(position_x= 2.23,position_y= 2.56)
+    result = _services.create_post1(db=db, post= post, deviceID=deviceID)
     _services.delete_post(db=db, deviceID=deviceID)
-    return 
+    _services.delete_dist(db=db, deviceID=deviceID)
+    
+    return  result
+
 
 @app.get("/gets_position{deviceID}", response_model=List[_schemas.Post1])
 def read_posts(

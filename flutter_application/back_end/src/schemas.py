@@ -15,19 +15,19 @@ class _weightposition(_pydantic.BaseModel):
 class weightposition_create(_weightposition):
     pass
 
-class _weightdistance(_pydantic.BaseModel):
-    mean_dist1: float
-    std_dist1: float
-    mean_dist2: float
-    std_dist2: float
-    mean_dist3: float
-    std_dist3: float
-    mean_dist4: float
-    std_dist4: float
-    mean_dist5: float
-    std_dist5: float
+class _weightrssi(_pydantic.BaseModel):
+    mean_rssi1: float
+    std_rssi1: float
+    mean_rssi2: float
+    std_rssi2: float
+    mean_rssi3: float
+    std_rssi3: float
+    mean_rssi4: float
+    std_rssi4: float
+    mean_rssi5: float
+    std_rssi5: float
 
-class weightdistance_create(_weightdistance):
+class weightrssi_create(_weightrssi):
     pass
 
 

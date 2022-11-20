@@ -11,10 +11,10 @@ import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:get/get.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
-KalmanFilter kf = new KalmanFilter(0.0025, 0.182, 0, 0);
-KalmanFilter kf1 = new KalmanFilter(0.0025, 0.182, 0, 0);
-KalmanFilter kf2 = new KalmanFilter(0.0025, 0.112, 0, 0);
-KalmanFilter kf3 = new KalmanFilter(0.0025, 0.112, 0, 0);
+KalmanFilter kf = new KalmanFilter(0.0075, 2.182, 0, 0);
+KalmanFilter kf1 = new KalmanFilter(0.0075, 2.182, 0, 0);
+KalmanFilter kf2 = new KalmanFilter(0.0075, 2.182, 0, 0);
+KalmanFilter kf3 = new KalmanFilter(0.0075, 2.182, 0, 0);
 
 class Homepage_app extends StatefulWidget {
   const Homepage_app({Key? key}) : super(key: key);
@@ -234,10 +234,10 @@ class _Homepage_app extends State<Homepage_app> {
         serviceUUID: serviceUUID,
         manuFactureData: manuFactureData,
         tp: tp);
-    if (macAddress == "DD:EE:07:58:61:32" || macAddress == "D3:B7:A7:91:0B:FC"
-        // macAddress == "C8:EC:06:1D:7B:DF" ||
-        //  macAddress == "DF:0E:44:8D:32:C1")
-        ) {
+    if (macAddress == "D3:B7:A7:91:0B:FC" ||
+        macAddress == "C8:EC:06:1D:7B:DF" ||
+        macAddress == "DF:0E:44:8D:32:C1" ||
+        macAddress == "DD:EE:07:58:61:32") {
       bleController.flagList[index];
       bleController.updateFlagList(flag: true, index: index);
     }
@@ -339,7 +339,7 @@ class _Homepage_app extends State<Homepage_app> {
       rssi = kf.getFilteredValue(r.rssi.toDouble()).toString();
     }
     if (macAddress == "D3:B7:A7:91:0B:FC") {
-      rssi = kf2.getFilteredValue(r.rssi.toDouble()).toString();
+      rssi = kf1.getFilteredValue(r.rssi.toDouble()).toString();
     }
     if (macAddress == "C8:EC:06:1D:7B:DF") {
       rssi = kf2.getFilteredValue(r.rssi.toDouble()).toString();

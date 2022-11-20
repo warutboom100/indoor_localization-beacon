@@ -52,19 +52,19 @@ class User_pos(_database.Base):
     date_created = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
     date_last_updated = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
 
-class weight_distance(_database.Base):
-    __tablename__ = "weight_distance"
+class weight_rssi(_database.Base):
+    __tablename__ = "weight_rssi"
     id = _sql.Column(_sql.Integer, primary_key=True, index=True)
-    mean_dist1: float = _sql.Column(_sql.Float, index=True)
-    std_dist1: float = _sql.Column(_sql.Float, index=True)
-    mean_dist2: float = _sql.Column(_sql.Float, index=True)
-    std_dist2: float = _sql.Column(_sql.Float, index=True)
-    mean_dist3: float = _sql.Column(_sql.Float, index=True)
-    std_dist3: float = _sql.Column(_sql.Float, index=True)
-    mean_dist4: float = _sql.Column(_sql.Float, index=True)
-    std_dist4: float = _sql.Column(_sql.Float, index=True)
-    mean_dist5: float = _sql.Column(_sql.Float, index=True)
-    std_dist5: float = _sql.Column(_sql.Float, index=True)
+    mean_rssi1: float = _sql.Column(_sql.Float, index=True)
+    std_rssi1: float = _sql.Column(_sql.Float, index=True)
+    mean_rssi2: float = _sql.Column(_sql.Float, index=True)
+    std_rssi2: float = _sql.Column(_sql.Float, index=True)
+    mean_rssi3: float = _sql.Column(_sql.Float, index=True)
+    std_rssi3: float = _sql.Column(_sql.Float, index=True)
+    mean_rssi4: float = _sql.Column(_sql.Float, index=True)
+    std_rssi4: float = _sql.Column(_sql.Float, index=True)
+    mean_rssi5: float = _sql.Column(_sql.Float, index=True)
+    std_rssi5: float = _sql.Column(_sql.Float, index=True)
     owner_id = _sql.Column(_sql.String, _sql.ForeignKey("users.id"))
     is_active = _sql.Column(_sql.Boolean, default=True)
     date_created = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)

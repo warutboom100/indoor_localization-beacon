@@ -18,7 +18,7 @@ Future<int> postData(String? username, String? password) async {
     Map data1 = {'deviceID': username};
     String body = json.encode(data1);
     var response = await http.post(
-        Uri.parse('https://f576d8eed0bf.ap.ngrok.io/reg_users'),
+        Uri.parse('https://b2279e996680.ap.ngrok.io/reg_users'),
         headers: {"Content-Type": "application/json"},
         body: body);
     int counter = response.statusCode;
@@ -31,7 +31,7 @@ Future<int> postData(String? username, String? password) async {
 
 Future<int> getRequest(String? username) async {
   try {
-    String url = "https://f576d8eed0bf.ap.ngrok.io/login_users/$username";
+    String url = "https://b2279e996680.ap.ngrok.io/login_users/$username";
     var response = await http.get(Uri.parse(url));
 
     int counter = response.statusCode;
@@ -46,20 +46,15 @@ postrssi(List data) async {
   Map data1 = {
     'RSSI1': data[0],
     'RSSI2': data[1],
-    'RSSI3': -57,
-    'RSSI4': -57,
+    'RSSI3': data[2],
+    'RSSI4': data[3],
     'RSSI5': -57
   };
   String body = json.encode(data1);
   var response = await http.post(
-      Uri.parse('https://f576d8eed0bf.ap.ngrok.io/Sent_rssi$userdata/posts'),
+      Uri.parse('https://b2279e996680.ap.ngrok.io/Sent_rssi$userdata/posts'),
       headers: {"Content-Type": "application/json"},
       body: body);
-  var decoded = json.decode(response.body);
-  List result = [];
-  decoded.values.forEach((value) {
-    result.add(value);
-  });
 
-  return Future.value(result);
+  return response.statusCode;
 }

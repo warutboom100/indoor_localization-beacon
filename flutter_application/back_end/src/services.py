@@ -32,25 +32,43 @@ def get_users(db: _orm.Session, skip: int = 0, limit: int = 100):
     return db.query(_models.User).offset(skip).limit(limit).all()
 
 def get_meandist(db: _orm.Session, deviceID: str):
-    result1 = db.query(_models.weight_distance.mean_dist1).order_by(_models.weight_distance.id.desc()).filter(_models.weight_distance.owner_id == deviceID).first()
-    result2 = db.query(_models.weight_distance.mean_dist2).order_by(_models.weight_distance.id.desc()).filter(_models.weight_distance.owner_id == deviceID).first()
-    result3 = db.query(_models.weight_distance.mean_dist3).order_by(_models.weight_distance.id.desc()).filter(_models.weight_distance.owner_id == deviceID).first()
-    result4 = db.query(_models.weight_distance.mean_dist4).order_by(_models.weight_distance.id.desc()).filter(_models.weight_distance.owner_id == deviceID).first()
-    result5 = db.query(_models.weight_distance.mean_dist5).order_by(_models.weight_distance.id.desc()).filter(_models.weight_distance.owner_id == deviceID).first()
+    result1 = db.query(_models.weight_rssi.mean_rssi1).order_by(_models.weight_rssi.id.desc()).filter(_models.weight_rssi.owner_id == deviceID).first()
+    result2 = db.query(_models.weight_rssi.mean_rssi2).order_by(_models.weight_rssi.id.desc()).filter(_models.weight_rssi.owner_id == deviceID).first()
+    result3 = db.query(_models.weight_rssi.mean_rssi3).order_by(_models.weight_rssi.id.desc()).filter(_models.weight_rssi.owner_id == deviceID).first()
+    result4 = db.query(_models.weight_rssi.mean_rssi4).order_by(_models.weight_rssi.id.desc()).filter(_models.weight_rssi.owner_id == deviceID).first()
+    result5 = db.query(_models.weight_rssi.mean_rssi5).order_by(_models.weight_rssi.id.desc()).filter(_models.weight_rssi.owner_id == deviceID).first()
     
     return [result1,result2,result3,result4,result5]
 
 def get_stddist(db: _orm.Session, deviceID: str):
-    result1 = db.query(_models.weight_distance.std_dist1).order_by(_models.weight_distance.id.desc()).filter(_models.weight_distance.owner_id == deviceID).first()
-    result2 = db.query(_models.weight_distance.std_dist2).order_by(_models.weight_distance.id.desc()).filter(_models.weight_distance.owner_id == deviceID).first()
-    result3 = db.query(_models.weight_distance.std_dist3).order_by(_models.weight_distance.id.desc()).filter(_models.weight_distance.owner_id == deviceID).first()
-    result4 = db.query(_models.weight_distance.std_dist4).order_by(_models.weight_distance.id.desc()).filter(_models.weight_distance.owner_id == deviceID).first()
-    result5 = db.query(_models.weight_distance.std_dist5).order_by(_models.weight_distance.id.desc()).filter(_models.weight_distance.owner_id == deviceID).first()
+    result1 = db.query(_models.weight_rssi.std_rssi1).order_by(_models.weight_rssi.id.desc()).filter(_models.weight_rssi.owner_id == deviceID).first()
+    result2 = db.query(_models.weight_rssi.std_rssi2).order_by(_models.weight_rssi.id.desc()).filter(_models.weight_rssi.owner_id == deviceID).first()
+    result3 = db.query(_models.weight_rssi.std_rssi3).order_by(_models.weight_rssi.id.desc()).filter(_models.weight_rssi.owner_id == deviceID).first()
+    result4 = db.query(_models.weight_rssi.std_rssi4).order_by(_models.weight_rssi.id.desc()).filter(_models.weight_rssi.owner_id == deviceID).first()
+    result5 = db.query(_models.weight_rssi.std_rssi5).order_by(_models.weight_rssi.id.desc()).filter(_models.weight_rssi.owner_id == deviceID).first()
 
     return result1,result2,result3,result4,result5
 
 
 def get_meandist1(db: _orm.Session, deviceID: str):
+    result1 = db.query(_models.Post.RSSI1).filter(_models.Post.owner_id == deviceID).all()
+    result2 = db.query(_models.Post.RSSI2).filter(_models.Post.owner_id == deviceID).all()
+    result3 = db.query(_models.Post.RSSI3).filter(_models.Post.owner_id == deviceID).all()
+    result4 = db.query(_models.Post.RSSI4).filter(_models.Post.owner_id == deviceID).all()
+    result5 = db.query(_models.Post.RSSI5).filter(_models.Post.owner_id == deviceID).all()
+    
+    return [np.average(result1),np.average(result2),np.average(result3),np.average(result4),np.average(result5)]
+
+def get_stddist1(db: _orm.Session, deviceID: str):
+    result1 = db.query(_models.Post.RSSI1).filter(_models.Post.owner_id == deviceID).all()
+    result2 = db.query(_models.Post.RSSI2).filter(_models.Post.owner_id == deviceID).all()
+    result3 = db.query(_models.Post.RSSI3).filter(_models.Post.owner_id == deviceID).all()
+    result4 = db.query(_models.Post.RSSI4).filter(_models.Post.owner_id == deviceID).all()
+    result5 = db.query(_models.Post.RSSI5).filter(_models.Post.owner_id == deviceID).all()
+
+    return [np.std(result1),np.std(result2),np.std(result3),np.std(result4),np.std(result5)]
+
+def get_meandist2(db: _orm.Session, deviceID: str):
     result1 = db.query(_models.dist.dist1).filter(_models.dist.owner_id == deviceID).all()
     result2 = db.query(_models.dist.dist2).filter(_models.dist.owner_id == deviceID).all()
     result3 = db.query(_models.dist.dist3).filter(_models.dist.owner_id == deviceID).all()
@@ -59,7 +77,7 @@ def get_meandist1(db: _orm.Session, deviceID: str):
     
     return [np.average(result1),np.average(result2),np.average(result3),np.average(result4),np.average(result5)]
 
-def get_stddist1(db: _orm.Session, deviceID: str):
+def get_stddist2(db: _orm.Session, deviceID: str):
     result1 = db.query(_models.dist.dist1).filter(_models.dist.owner_id == deviceID).all()
     result2 = db.query(_models.dist.dist2).filter(_models.dist.owner_id == deviceID).all()
     result3 = db.query(_models.dist.dist3).filter(_models.dist.owner_id == deviceID).all()
@@ -80,6 +98,13 @@ def get_posts(db: _orm.Session, deviceID: str, skip: int = 0, limit: int = 1):
     
     return db.query(_models.User_pos).order_by(_models.User_pos.id.desc()).filter(_models.User_pos.owner_id == deviceID).limit(limit).all()
     
+def get_posts1(db: _orm.Session, deviceID: str):
+    
+    return db.query(_models.User_pos).order_by(_models.User_pos.id.desc()).filter(_models.User_pos.owner_id == deviceID).first()
+
+
+
+
 
 def create_post(db: _orm.Session, post: _schemas.PostCreate, deviceID: str):
     post = _models.Post(**post.dict(), owner_id=deviceID)
@@ -102,8 +127,8 @@ def create_dist(db: _orm.Session, post: _schemas.Distcreate, deviceID: str):
     db.refresh(post)
     return post
 
-def create_weightdist(db: _orm.Session, post: _schemas.weightdistance_create, deviceID: str):
-    post = _models.weight_distance(**post.dict(), owner_id=deviceID)
+def create_weightrssi(db: _orm.Session, post: _schemas.weightrssi_create, deviceID: str):
+    post = _models.weight_rssi(**post.dict(), owner_id=deviceID)
     db.add(post)
     db.commit()
     db.refresh(post)
@@ -122,6 +147,10 @@ def get_post(db: _orm.Session, post_id: int):
 
 
 def delete_post(db: _orm.Session, deviceID: str):
+    db.query(_models.Post).filter(_models.Post.owner_id == deviceID).delete()
+    db.commit()
+
+def delete_dist(db: _orm.Session, deviceID: str):
     db.query(_models.dist).filter(_models.dist.owner_id == deviceID).delete()
     db.commit()
 

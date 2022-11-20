@@ -22,7 +22,7 @@ class _User_position extends State<User_position> {
   Future<String> getData() async {
     var response = await http.get(
       Uri.parse(
-          'https://7247d76f8184.ap.ngrok.io/gets_position$userdata?skip=0&limit=10'),
+          'https://b2279e996680.ap.ngrok.io/gets_position$userdata?skip=0&limit=10'),
       headers: {"Content-Type": "application/json"},
     );
 
