@@ -1,6 +1,7 @@
 import 'package:beacon_carver/model/kalmanfilter.dart';
 import 'package:beacon_carver/model/profile.dart';
 import 'package:beacon_carver/screen/home.dart';
+import 'package:beacon_carver/screen/imu_view.dart';
 import 'package:beacon_carver/screen/indoormap.dart';
 import 'package:beacon_carver/screen/user_position.dart';
 import 'package:flutter/material.dart';
@@ -154,8 +155,7 @@ class _Homepage_app extends State<Homepage_app> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const User_position()),
+                    MaterialPageRoute(builder: (context) => const imu_view()),
                   );
                 },
               ),
@@ -235,7 +235,7 @@ class _Homepage_app extends State<Homepage_app> {
         manuFactureData: manuFactureData,
         tp: tp);
     if (macAddress == "D3:B7:A7:91:0B:FC" ||
-        macAddress == "C8:EC:06:1D:7B:DF" ||
+        macAddress == "EF:43:DF:C2:9D:7B" ||
         macAddress == "DF:0E:44:8D:32:C1" ||
         macAddress == "DD:EE:07:58:61:32") {
       bleController.flagList[index];
@@ -335,17 +335,17 @@ class _Homepage_app extends State<Homepage_app> {
         .replaceAll('}', '');
     tp = r.advertisementData.txPowerLevel.toString();
     rssi = r.rssi.toString();
-    if (macAddress == "DD:EE:07:58:61:32") {
-      rssi = kf.getFilteredValue(r.rssi.toDouble()).toString();
-    }
-    if (macAddress == "D3:B7:A7:91:0B:FC") {
-      rssi = kf1.getFilteredValue(r.rssi.toDouble()).toString();
-    }
-    if (macAddress == "C8:EC:06:1D:7B:DF") {
-      rssi = kf2.getFilteredValue(r.rssi.toDouble()).toString();
-    }
-    if (macAddress == "DF:0E:44:8D:32:C1") {
-      rssi = kf3.getFilteredValue(r.rssi.toDouble()).toString();
-    }
+    // if (macAddress == "DD:EE:07:58:61:32") {
+    //   rssi = kf.getFilteredValue(r.rssi.toDouble()).toString();
+    // }
+    // if (macAddress == "D3:B7:A7:91:0B:FC") {
+    //   rssi = kf1.getFilteredValue(r.rssi.toDouble()).toString();
+    // }
+    // if (macAddress == "C8:EC:06:1D:7B:DF") {
+    //   rssi = kf2.getFilteredValue(r.rssi.toDouble()).toString();
+    // }
+    // if (macAddress == "DF:0E:44:8D:32:C1") {
+    //   rssi = kf3.getFilteredValue(r.rssi.toDouble()).toString();
+    // }
   }
 }

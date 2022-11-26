@@ -14,6 +14,9 @@ import 'package:sensors_plus/sensors_plus.dart';
 
 final Color color2 = Color(0xffFA8165);
 KalmanFilter kf1 = new KalmanFilter(0.105, 2.482, 0, 0);
+KalmanFilter kf2 = new KalmanFilter(0.105, 2.482, 0, 0);
+KalmanFilter kf3 = new KalmanFilter(0.105, 2.482, 0, 0);
+KalmanFilter kf4 = new KalmanFilter(0.105, 2.482, 0, 0);
 
 class IndoormapScreen extends StatefulWidget {
   const IndoormapScreen({Key? key}) : super(key: key);
@@ -47,7 +50,7 @@ class _IndoormapScreen extends State<IndoormapScreen>
   Future<dynamic> getpossition() async {
     String userdata = Profile.name;
     var response = await http.get(
-      Uri.parse('https://b2279e996680.ap.ngrok.io/read_position$userdata'),
+      Uri.parse('https://8151a66fc4ba.ap.ngrok.io/read_position$userdata'),
       headers: {"Content-Type": "application/json"},
     );
     // print(response.body);
@@ -72,7 +75,7 @@ class _IndoormapScreen extends State<IndoormapScreen>
       ..addListener(() => setState(() {}))
       ..forward()
       ..addStatusListener((status) {
-        List rssi1 = [0.0, 0.0, 0.0, 0.0, 0.0];
+        List rssi1 = [];
         if (status == AnimationStatus.completed) {
           controller.reverse();
         } else if (status == AnimationStatus.dismissed) {
@@ -92,15 +95,16 @@ class _IndoormapScreen extends State<IndoormapScreen>
             //   rssi1[0] = rssi;
             // }
             if (id == "D3:B7:A7:91:0B:FC") {
-              rssi1[0] = kf1.getFilteredValue(rssi.toDouble());
-            }
-            if (id == "C8:EC:06:1D:7B:DF") {
+              //(0,0)
+              rssi1[0] = rssi;
+            } else if (id == "EF:43:DF:C2:9D:7B") {
+              //(0,5)
               rssi1[1] = rssi;
-            }
-            if (id == "DF:0E:44:8D:32:C1") {
+            } else if (id == "DF:0E:44:8D:32:C1") {
+              //(5,0)
               rssi1[2] = rssi;
-            }
-            if (id == "DD:EE:07:58:61:32") {
+            } else if (id == "DD:EE:07:58:61:32") {
+              //(5,5)
               rssi1[3] = rssi;
             }
           }
@@ -110,12 +114,12 @@ class _IndoormapScreen extends State<IndoormapScreen>
       });
 
     timer = Timer.periodic(
-      const Duration(seconds: 10),
+      const Duration(seconds: 5),
       (timer) {
         /// callback will be executed every 1 second, increament a count value
         /// on each callback
         setState(() {
-          getpossition();
+          // getpossition();
           // print(pos);
         });
       },

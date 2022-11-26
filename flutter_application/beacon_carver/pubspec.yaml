@@ -48,6 +48,8 @@ dependencies:
   form_field_validator: ^1.1.0
   fluttertoast: ^8.0.9
   sensors_plus: ^1.4.0
+  vector_math: ^2.1.2
+  motion_sensors: ^0.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

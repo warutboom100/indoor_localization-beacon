@@ -29,8 +29,35 @@ class Post(_database.Base):
 
     owner = _orm.relationship("User", back_populates="posts")
 
-class dist(_database.Base):
+class rssi(_database.Base):
     __tablename__ = "data_rssi"
+    id = _sql.Column(_sql.Integer, primary_key=True, index=True)
+    rssi1: float = _sql.Column(_sql.Float, index=True)
+    rssi2: float = _sql.Column(_sql.Float, index=True)
+    rssi3: float = _sql.Column(_sql.Float, index=True)
+    rssi4: float = _sql.Column(_sql.Float, index=True)
+    rssi5: float = _sql.Column(_sql.Float, index=True)
+    owner_id = _sql.Column(_sql.String, _sql.ForeignKey("users.id"))
+    is_active = _sql.Column(_sql.Boolean, default=True)
+    date_created = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
+    date_last_updated = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
+
+
+class Post_dist(_database.Base):
+    __tablename__ = "read_dist"
+    id = _sql.Column(_sql.Integer, primary_key=True, index=True)
+    DIST1: float = _sql.Column(_sql.Float, index=True)
+    DIST2: float = _sql.Column(_sql.Float, index=True)
+    DIST3: float = _sql.Column(_sql.Float, index=True)
+    DIST4: float = _sql.Column(_sql.Float, index=True)
+    DIST5: float = _sql.Column(_sql.Float, index=True)
+    owner_id = _sql.Column(_sql.String, _sql.ForeignKey("users.id"))
+    is_active = _sql.Column(_sql.Boolean, default=True)
+    date_created = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
+    date_last_updated = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
+
+class dist(_database.Base):
+    __tablename__ = "data_dist"
     id = _sql.Column(_sql.Integer, primary_key=True, index=True)
     dist1: float = _sql.Column(_sql.Float, index=True)
     dist2: float = _sql.Column(_sql.Float, index=True)
@@ -47,6 +74,16 @@ class User_pos(_database.Base):
     id = _sql.Column(_sql.Integer, primary_key=True, index=True)
     position_x: float = _sql.Column(_sql.Float, index=True)
     position_y: float = _sql.Column(_sql.Float, index=True)
+    owner_id = _sql.Column(_sql.String, _sql.ForeignKey("users.id"))
+    is_active = _sql.Column(_sql.Boolean, default=True)
+    date_created = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
+    date_last_updated = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
+
+class data_pos(_database.Base):
+    __tablename__ = "data_position"
+    id = _sql.Column(_sql.Integer, primary_key=True, index=True)
+    x: float = _sql.Column(_sql.Float, index=True)
+    y: float = _sql.Column(_sql.Float, index=True)
     owner_id = _sql.Column(_sql.String, _sql.ForeignKey("users.id"))
     is_active = _sql.Column(_sql.Boolean, default=True)
     date_created = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
@@ -77,6 +114,24 @@ class weight_position(_database.Base):
     std_pos_x: float = _sql.Column(_sql.Float, index=True)
     mean_pos_y: float = _sql.Column(_sql.Float, index=True)
     std_pos_y: float = _sql.Column(_sql.Float, index=True)
+    owner_id = _sql.Column(_sql.String, _sql.ForeignKey("users.id"))
+    is_active = _sql.Column(_sql.Boolean, default=True)
+    date_created = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
+    date_last_updated = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)
+
+class weight_dist(_database.Base):
+    __tablename__ = "weight_dist"
+    id = _sql.Column(_sql.Integer, primary_key=True, index=True)
+    mean_dist1: float = _sql.Column(_sql.Float, index=True)
+    std_dist1: float = _sql.Column(_sql.Float, index=True)
+    mean_dist2: float = _sql.Column(_sql.Float, index=True)
+    std_dist2: float = _sql.Column(_sql.Float, index=True)
+    mean_dist3: float = _sql.Column(_sql.Float, index=True)
+    std_dist3: float = _sql.Column(_sql.Float, index=True)
+    mean_dist4: float = _sql.Column(_sql.Float, index=True)
+    std_dist4: float = _sql.Column(_sql.Float, index=True)
+    mean_dist5: float = _sql.Column(_sql.Float, index=True)
+    std_dist5: float = _sql.Column(_sql.Float, index=True)
     owner_id = _sql.Column(_sql.String, _sql.ForeignKey("users.id"))
     is_active = _sql.Column(_sql.Boolean, default=True)
     date_created = _sql.Column(_sql.DateTime, default=_dt.datetime.utcnow)

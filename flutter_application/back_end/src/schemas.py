@@ -30,6 +30,20 @@ class _weightrssi(_pydantic.BaseModel):
 class weightrssi_create(_weightrssi):
     pass
 
+class _weightdist(_pydantic.BaseModel):
+    mean_dist1: float
+    std_dist1: float
+    mean_dist2: float
+    std_dist2: float
+    mean_dist3: float
+    std_dist3: float
+    mean_dist4: float
+    std_dist4: float
+    mean_dist5: float
+    std_dist5: float
+
+class weightdist_create(_weightdist):
+    pass
 
 class _Datadist(_pydantic.BaseModel):
     dist1: float
@@ -38,7 +52,36 @@ class _Datadist(_pydantic.BaseModel):
     dist4: float
     dist5: float
 
-class Distcreate(_Datadist):
+class distcreate(_Datadist):
+    pass
+
+
+class _Datapos(_pydantic.BaseModel):
+    x: float
+    y: float
+    
+
+class poscreate(_Datapos):
+    pass
+
+class _Postdist(_pydantic.BaseModel):
+    DIST1: float
+    DIST2: float
+    DIST3: float
+    DIST4: float
+    DIST5: float
+
+class Postdistcreate(_Postdist):
+    pass
+
+class _Datarssi(_pydantic.BaseModel):
+    rssi1: float
+    rssi2: float
+    rssi3: float
+    rssi4: float
+    rssi5: float
+
+class rssicreate(_Datarssi):
     pass
 
 class _PostBase(_pydantic.BaseModel):
